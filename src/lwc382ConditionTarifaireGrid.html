@@ -1,0 +1,227 @@
+<template>
+    <!-- <c-modal header={modalHeader}>
+        {modalContent}
+        <div slot="footer">
+            <lightning-button
+                label="Close"
+                variant="brand"
+                onclick={closeModal}
+            ></lightning-button>
+        </div>
+    </c-modal> -->
+
+    <!-- <c-modal
+        header="Êtes-vous sûr de vouloir modifier les tarifs contractuels ?"
+        data-id="ModalConfirmerModif" >
+        <article class="slds-card">
+            <div class="slds-grid slds-m-top_medium slds-m-left_medium" slot="footer" style="width: 250px;" align="center">
+                <div class="slds-col">
+                     <lightning-button
+                        label="Oui"
+                        variant="brand"
+                        onclick={handleEnregistrerModif}
+                    ></lightning-button>                  
+                </div>
+                <div>
+                    <lightning-button
+                    label="Non"
+                    variant="brand"
+                    onclick={handleDialogCloseModif}
+                    ></lightning-button>                
+                </div>
+
+            </div>
+        </article>
+    </c-modal> -->
+
+    <!-- <template if:false={loaded}>
+        <div class="modal">
+            <div class="spinner">
+                <lightning-spinner
+                    alternative-text="Loading"
+                ></lightning-spinner>
+            </div>
+        </div>
+    </template> -->
+    <lightning-card>
+        <!-- <template if:true={gridModifiable}> -->
+        <template>
+            <!-- <template if:true={labels}> -->
+            <template>
+                <lightning-layout>
+                    <lightning-layout-item>
+                        <div
+                            class="mediumTitle slds-var-p-around_x-small slds-text-align_center"
+                        >
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tarif
+                            :
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <div
+                            class="mediumTitle slds-var-p-around_x-small slds-text-align_center"
+                        >
+                            {generalInfo.nomSolution}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <div
+                            class="slds-var-p-around_x-small mediumTitle slds-text-align_center"
+                        >
+                            Remise :
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <div
+                            class="slds-var-p-around_xx-small slds-text-align_center"
+                            style="width: 30px;"
+                        >
+                            <input
+                                type="text"
+                                name="colModel"
+                                data-id="remiseGlobal"
+                                style="width: 40px;"
+                                value={remise}
+                            />
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <br />
+                <br />
+            </template>
+        </template>
+
+        <!-- <template if:true={gridTitle}> -->
+        <template>
+            <h1 slot="title" onclick={dispDetail}>{gridTitle}</h1>
+        </template>
+
+        <template if:true={showDetail}>
+            <template if:true={values}>
+                <table class={tableClass} style={tableWidth}>
+                    <!-- LIGNE DES LABELS-->
+                    <tr class="tdGrey">
+                        <template if:true={labels.editable}>
+                            <th class="tdWhite"></th>
+                        </template>
+                        <td class="tdAllBorder tdDisplay" style="width: 142px;">
+                            {labels.colType}
+                        </td>
+                        <td class="tdDisplay" style="width: 102px;">
+                            {labels.colUnite}
+                        </td>
+                        <template for:each={labels.infos} for:item="info">
+                            <td
+                                class="tdDisplay"
+                                key={info.colName}
+                                style="width: 52px;"
+                            >
+                                {info.value}
+                            </td>
+                        </template>
+                    </tr>
+                    <!-- AFFICHAGE DU TABLEAU-->
+                    <template for:each={values} for:item="value">
+                        <tr
+                            key={value.idLine}
+                            data-id={value.idLine}
+                            class={value.css}
+                        >
+                            <td class="tdDisplay" style="width: 142px;">
+                                {value.colType}
+                            </td>
+                            <td class="tdDisplay" style="width: 152px;">
+                                {value.colUnite}
+                            </td>
+                            <template for:each={value.infos} for:item="info">
+                                <td
+                                    class={info.cellColor}
+                                    key={info.colName}
+                                    style="width: 102px;"
+                                >
+                                    <input
+                                        type="hidden"
+                                        name="colModel"
+                                        data-id={info.colName}
+                                        data-idligneneg={info.idLigneNeg}
+                                        data-storingfield={info.storingField}
+                                        data-keysup={info.keySup}
+                                        style="text-align: center;"
+                                        value={info.value}
+                                    />
+                                    {info.value}
+                                </td>
+                            </template>
+                        </tr>
+                    </template>
+                </table>
+            </template>
+        </template>
+        <template if:true={gridModifiable}>
+            <!--  on cache les boutons durant les chargements ou actions utilisateurs -->
+            <template if:true={loaded}>
+                <!-- AFFICHAGE DES BOUTONS SOUS LE TABLEAU-->
+                <template if:false={generalInfo.isSigned}>
+                    <div
+                        class="slds-grid slds-var-m-top_medium slds-var-m-left_medium"
+                        style="width: 550px;"
+                    >
+                        <div class="slds-col">
+                            <a
+                                class="slds-button slds-button_neutral"
+                                onclick={appliqueRemiseGlobal}
+                                href="javascript:void(0);"
+                                >Appliquer la remise</a
+                            >
+                        </div>
+                        <div class="slds-col">
+                            <a
+                                class="slds-button slds-button_neutral"
+                                href="javascript:void(0);"
+                                onclick={appliquerConditionsReference}
+                                >Appliquer les conditions de référence</a
+                            >
+                        </div>
+                        <div class="slds-col">
+                            <a
+                                class="slds-button slds-button_neutral"
+                                onclick={modifier}
+                                href="javascript:void(0);"
+                                >Modifier les tarifs</a
+                            >
+                        </div>
+                    </div>
+                    <div
+                        class="slds-grid slds-var-m-top_medium slds-var-m-left_medium"
+                        style="width: 550px;"
+                    >
+                        <div class="slds-col">
+                            <a
+                                class="slds-button slds-button_neutral"
+                                href="javascript:void(0);"
+                                onclick={ConfirmerEnregistrer}
+                                >Enregistrer</a
+                            >
+                        </div>
+                        <div class="slds-col">
+                            <a
+                                class="slds-button slds-button_neutral"
+                                href={redirect}
+                                >Annuler</a
+                            >
+                        </div>
+                    </div>
+                </template>
+                <template if:true={generalInfo.isSigned}>
+                    <div class="slds-col">
+                        <a
+                            class="slds-button slds-button_neutral"
+                            href={redirect}
+                            >Annuler</a
+                        >
+                    </div>
+                </template>
+            </template>
+        </template>
+    </lightning-card>
+</template>
