@@ -1,0 +1,136 @@
+lightning-card {
+    display: block;
+    border-top: 4px solid black;
+    border-radius: 5px;
+}
+
+.slds-card {
+    display: block;
+    border-top: 4px solid black;
+    border-radius: 5px;
+}
+
+th {
+    background-color: rgb(243, 240, 240);
+    font-weight: bold;
+    text-align: center;
+}
+
+td {
+    text-align: center;
+}
+
+.title {
+    padding: 8px 10px 0px 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.smallTitle {
+    font-size: 14px;
+}
+
+.bigTitle {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.mediumTitle {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+h1 {
+    color: rgb(0, 112, 210);
+}
+p {
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    color: rgb(62, 62, 60);
+}
+.app {
+    background-color: white;
+    height: 100vh;
+    overflow: scroll;
+}
+
+.thWhite {
+    border: 0px solid black;
+    background-color: white;
+}
+
+.tdGrey {
+    background-color: rgb(243, 240, 240);
+}
+
+.tdWhite {
+    background-color: white;
+}
+
+input {
+    padding: 0 !important;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(217, 219, 221);
+    border-radius: 0.25rem;
+    width: 100%;
+    transition: border 0.1s linear, background-color 0.1s linear;
+    display: inline-block;
+    line-height: 1.875rem;
+    min-height: calc(1.875rem + (1px * 2));
+    text-align: center;
+}
+
+.spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 620px;
+    height: 80px;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* Sit on top */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+td {
+    border: 1px solid black;
+    font-weight: bold;
+    text-align: center;
+}
+
+.DarkBlue {
+    border: 1px solid black;
+    font-weight: bold;
+    text-align: center;
+    background-color: darkblue;
+    border-color: black;
+    color: white;
+}
+
+.Blue {
+    border: 1px solid black;
+    font-weight: bold;
+    text-align: center;
+    background-color: SteelBlue;
+    color: white;
+    border-color: black;
+}
+
+.LightBlue {
+    border: 1px solid black;
+    font-weight: bold;
+    text-align: center;
+    background-color: LightSteelBlue;
+}
+
+.mytextarea {
+    height: 300px;
+}

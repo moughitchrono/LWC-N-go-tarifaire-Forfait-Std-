@@ -1,0 +1,260 @@
+<template>
+    <c-modal header={modalHeader}>
+        {modalContent}
+        <div slot="footer">
+            <lightning-button
+                label="Close"
+                variant="brand"
+                onclick={closeModal}
+            ></lightning-button>
+        </div>
+    </c-modal>
+    <c-modal
+        header=" Copier coller dans la zone les valeurs"
+        data-id="modalImport"
+    >
+        <div class="slds-align_absolute-center">
+            <textarea
+                class="mytextarea"
+                data-id="importArea"
+                cols="70"
+            ></textarea>
+        </div>
+
+        <br />
+        <b style="color: red;">{erreur}</b>
+        <br />
+        <div class="slds-grid slds-m-top_medium slds-m-left_medium" slot="footer" style="width: 250px;" align="center">
+			<div class="slds-col">
+				<lightning-button
+                label="Import"
+                variant="brand"
+                onclick={handleDialogImport}
+            	></lightning-button>			
+			</div>
+			<div class="slds-col">
+		        <lightning-button
+                label="Annuler"
+                variant="brand"
+                onclick={handleDialogClose}
+            	></lightning-button>		
+			</div>
+
+        </div>
+	</c-modal>
+
+    <template if:false={loaded}>
+        <div class="modal">
+            <div class="spinner">
+                <lightning-spinner
+                    alternative-text="Loading"
+                ></lightning-spinner>
+            </div>
+        </div>
+    </template>
+    <lightning-card>
+        <div class={modalImportEnable}>
+			<template if:true={labels}>
+				<lightning-layout>
+					<lightning-layout-item>
+						<div
+							class="mediumTitle slds-var-p-around_x-small slds-text-align_center"
+						>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tarif
+							:
+						</div>
+					</lightning-layout-item>
+					<lightning-layout-item>
+						<div
+							class="mediumTitle slds-var-p-around_x-small slds-text-align_center"
+						>
+							{generalInfo.nomSolution}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</div>
+					</lightning-layout-item>
+				</lightning-layout>
+			</template>
+			<template if:true={values}>
+				<table class={tableClass} style={tableWidth}>
+					<tr data-id="colPercent">
+						<th class="thWhite" colspan="3"></th>
+						<template for:each={labels.infos} for:item="info">
+							<th
+								class="thWhite"
+								key={info.colName}
+								style="width: 52px;"
+							>
+								<lightning-input
+									type="text"
+									name="colModel"
+									label=" "
+									value=""
+									data-id={info.colName}
+								>
+								</lightning-input>
+							</th>
+						</template>
+					</tr>
+					<!-- LIGNE DES LABELS-->
+					<tr class="tdGrey">
+						<template if:true={labels.editable}>
+							<th class="tdWhite"></th>
+						</template>
+						<td class="tdAllBorder tdDisplay" style="width: 142px;">
+							{labels.colType}
+						</td>
+						<td class="tdDisplay" style="width: 102px;">
+							{labels.colUnite}
+						</td>
+						<template for:each={labels.infos} for:item="info">
+							<td
+								class="tdDisplay"
+								key={info.colName}
+								style="width: 52px;"
+							>
+								{info.value}
+							</td>
+						</template>
+					</tr>
+					<!-- AFFICHAGE DU TABLEAU-->
+					<template for:each={values} for:item="value">
+						<tr
+							key={value.idLine}
+							data-id={value.idLine}
+							class={value.css}
+						>
+							<th class="tdWhite" style="width: 152px;">
+								<lightning-input
+									class="slds-align_absolute-center"
+									type="text"
+									name="colModel"
+									label=" "
+									value=""
+									data-id={value.idLine}
+								>
+								</lightning-input>
+							</th>
+							<td class="tdDisplay" style="width: 142px;">
+								{value.colType}
+							</td>
+							<td class="tdDisplay" style="width: 152px;">
+								{value.colUnite}
+							</td>
+							<template for:each={value.infos} for:item="info">
+								<td
+									class={info.cellColor}
+									key={info.colName}
+									style="width: 110px;"
+								>
+									<div class="slds-align_absolute-center">
+										<div
+											class="slds-form-element_label slds-grow"
+											style="margin: 2px 5px 2px 2px;"
+										>
+											<input
+												type="text"
+												name="colModel"
+												data-id={info.colName}
+												data-idligneneg={info.idLigneNeg}
+												data-storingfield={info.storingField}
+												data-keysup={info.keySup}
+												style="text-align: center;"
+												value={info.value}
+                                                class={info.cellColor}
+											/>
+										</div>
+									</div>
+								</td>
+							</template>
+						</tr>
+					</template>
+				</table>
+			</template>
+			<!--  on cache les boutons durant les chargements ou actions utilisateurs -->
+			<template if:true={loaded}>
+				<!-- AFFICHAGE DES BOUTONS SOUS LE TABLEAU-->
+				<template if:false={generalInfo.isSigned}>
+					<div
+						class="slds-grid slds-m-top_medium slds-m-left_medium"
+						style="width: 650px;"
+					>
+						<div class="slds-col">
+							<a
+								class="slds-button slds-button_neutral"
+								onclick={appliquerRemise}
+								href="javascript:void(0);"
+								>Appliquer la remise</a
+							>
+						</div>
+						<div class="slds-col">
+							<a
+								class="slds-button slds-button_neutral"
+								href="javascript:void(0);"
+								onclick={displayImportModal}
+								>Import de grille</a
+							>
+						</div>
+						<div class="slds-col">
+							<a
+								class="slds-button slds-button_neutral"
+								href="javascript:void(0);"
+								onclick={ConfirmerEnregistrer}
+								>Enregistrer</a
+							>
+						</div>
+					</div>
+					<div
+						class="slds-grid slds-m-top_medium slds-m-left_medium"
+						style="width: 650px;"
+					>
+						<div class="slds-col">
+							<a class="slds-button slds-button_neutral" href={redirect}
+								>Annuler</a
+							>
+						</div>
+						<div class="slds-col">
+							<a
+								class="slds-button slds-button_neutral"
+								onclick={appliquerConditionsReference}
+								href="javascript:void(0);"
+								>Retour au tarif de réference</a
+							>
+						</div>
+					</div>
+				</template>
+				<template if:true={generalInfo.isSigned}>
+					<div class="slds-grid slds-m-top_medium slds-m-left_medium" style="width: 650px;">
+						<div class="slds-col">
+							<a class="slds-button slds-button_neutral" href={redirect}>Annuler</a>
+						</div>
+					</div>
+				</template>
+
+			</template>
+        </div>
+	</lightning-card>
+	<!-- Popup de confirmation pour le mode modif -->
+    <c-modal
+        header="Êtes-vous sûr de vouloir modifier les tarifs contractuels ?"
+        data-id="ModalConfirmerModif" >
+        <article class="slds-card">
+            <div class="slds-grid slds-m-top_medium slds-m-left_medium" slot="footer" style="width: 250px;" align="center">
+                <div class="slds-col">
+                     <lightning-button
+                        label="Oui"
+                        variant="brand"
+                        onclick={handleEnregistrerModif}
+                    ></lightning-button>                  
+                </div>
+                <div>
+                    <lightning-button
+                    label="Non"
+                    variant="brand"
+                    onclick={handleDialogCloseModif}
+                    ></lightning-button>                
+                </div>
+
+            </div>
+        </article>
+	</c-modal>
+		
+</template>
